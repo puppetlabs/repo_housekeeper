@@ -17,6 +17,12 @@ jobs:
     - name: Send Report
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SENDGRID_SERVER: ${{ secrets.SENDGRID_SERVER }}
+        SENDGRID_ADDRESS: ${{ secrets.SENDGRID_ADDRESS }}
+        SENDGRID_DOMAIN: ${{ secrets.SENDGRID_DOMAIN }}
+        SENDGRID_USERNAME: ${{ secrets.SENDGRID_USERNAME }}
+        SENDGRID_PASSWORD: ${{ secrets.SENDGRID_PASSWORD }}
+        EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
       run: |
         gem install bundler
         bundle install --jobs 4 --retry 3
