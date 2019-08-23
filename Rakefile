@@ -38,6 +38,7 @@ task :stale_pulls do
   sample = stale[:items].sample(15)
 
   server    = ENV['SENDGRID_SERVER']
+  from      = ENV['SENDGRID_FROM']
   address   = ENV['SENDGRID_ADDRESS']
   domain    = ENV['SENDGRID_DOMAIN']
   username  = ENV['SENDGRID_USERNAME']
