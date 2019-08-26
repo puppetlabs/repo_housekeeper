@@ -32,10 +32,10 @@ If you've got feedback on this content, please let us know at community-team@pup
 
 Selected Issues:
 -----------------------------------------------
-<% sample.each do |issue| %>
+<% sample.each do |issue| -%>
 * [puppetlabs/<%= File.basename issue[:repository_url] %>] <%= issue[:title] %>
-        * Filed by: <%= issue[:user][:login] %><% if issue[:author_association] == 'FIRST_TIME_CONTRIBUTOR' %> [FIRST TIME CONTRIBUTOR] <% end %>
+        * Filed by: https://github.com/<%= issue[:user][:login] %><% if issue[:author_association] == 'FIRST_TIME_CONTRIBUTOR' %> [FIRST TIME CONTRIBUTOR] <% end %>
         * Created: <%= issue[:created_at] %>
         * Last updated: <%= issue[:updated_at] %>
         * Link: <%= issue[:html_url] %>
-<% end %>
+<% end -%>
