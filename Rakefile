@@ -45,7 +45,7 @@ task :stale_pulls do
   password  = ENV['SENDGRID_PASSWORD']
   email     = ENV['EMAIL_ADDRESS']
 
-  message   = ERB.new(File.read('templates/stale_prs.erb')).result(binding)
+  message   = ERB.new(File.read('templates/stale_prs.erb'), nil, '-').result(binding)
 
   Net::SMTP.start(server, 2525, domain, username, password) do |smtp|
     smtp.send_message(message, address, email)
