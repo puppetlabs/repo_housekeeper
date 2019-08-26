@@ -18,6 +18,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SENDGRID_SERVER: smtp.sendgrid.net
+        SENDGRID_FROM: Puppet Community Team
         SENDGRID_ADDRESS: puppetlabseducation@puppetlabs.com
         SENDGRID_DOMAIN: puppetlabs.com
         SENDGRID_USERNAME: puppetlabseducation
