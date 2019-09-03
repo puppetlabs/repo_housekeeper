@@ -3,22 +3,22 @@ require 'base64'
 require 'open-uri'
 require 'octokit'
 require 'mail'
+require 'yaml'
 
-options = { :address   => ENV['SENDGRID_SERVER'],
-            :port      => ENV['SENDGRID_PORT'],
-            :domain    => ENV['SENDGRID_DOMAIN'],
-            :user_name => ENV['SENDGRID_USERNAME'],
-            :password  => ENV['SENDGRID_PASSWORD'],
-          }
+$config = YAML.load_file('config.yaml') rescue {}
 
+raise "Please configure SendGrid integration" unless $config[:smtp].is_a? Hash
+raise "Please go change the SendGrid password now and remove it from the repo" if $config[:smtp].include? :password
+
+$config[:smtp][:password] = ENV['SENDGRID_PASSWORD']
 Mail.defaults do
-  delivery_method :smtp, options
+  delivery_method :smtp, $config[:smtp]
 end
 
 def sendmail(recipient, subject_line, text, html=nil)
   Mail.deliver do
     to      recipient
-    from    "#{ENV['SENDGRID_FROM']} <#{ENV['SENDGRID_ADDRESS']}>"
+    from    $config[:smtp][:from]
     subject subject_line
 
     text_part do
@@ -35,7 +35,7 @@ def sendmail(recipient, subject_line, text, html=nil)
 end
 
 def github_client(page_size = 100)
-  @token = ENV['GITHUB_TOKEN'] || `git config --global github.token`.chomp
+  @token ||= ENV['GITHUB_TOKEN'] || `git config --global github.token`.chomp
 
   if @token.empty?
     puts "You need to generate a GitHub token:"

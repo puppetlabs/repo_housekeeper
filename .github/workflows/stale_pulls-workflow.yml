@@ -17,16 +17,10 @@ jobs:
     - name: Send Report
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SENDGRID_SERVER: smtp.sendgrid.net
-        SENDGRID_PORT: 587
-        SENDGRID_FROM: Puppet Community Team
-        SENDGRID_ADDRESS: puppetcommunity@puppet.com
-        SENDGRID_DOMAIN: puppet.com
-        SENDGRID_USERNAME: apikey
         SENDGRID_PASSWORD: ${{ secrets.SENDGRID_PASSWORD }}
         EMAIL_ADDRESS: community-experience@puppet.com
       run: |
         gem install bundler
         bundle install --jobs 4 --retry 3
         bundle exec rake stale_pulls
-        
+
