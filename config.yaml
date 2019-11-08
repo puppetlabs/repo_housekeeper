@@ -1,6 +1,6 @@
 ---
 :smtp:
-  :from: 'Puppet Community Team <puppetcommunity@puppet.com>'
+  :from: 'Puppet Community Team <community@puppet.com>'
   :domain: 'puppet.com'
   :user_name: 'apikey'
   :address: 'smtp.sendgrid.net'
