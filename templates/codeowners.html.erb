@@ -1,0 +1,55 @@
+<p>Hi there!</p>
+
+<p>We've transitioned to the use of <code>CODEOWNERS</code> files in all
+our public GitHub repositories. Not only does this help document who's
+responsible for the code you're looking at, but it will automatically issue PR
+review requests for the parts of the codebase that a PR changes.</p>
+
+<p>This report helps to keep these files current, maintained, and correct. The
+most common issues we see are malformed owner assignments and incomplete
+coverage.  The owners assignment should be <code>@puppetlabs/&lt;team name&gt;</code>.
+We prefer team assignments, but you can also use an individual assignment if
+needed. To ensure complete code coverage, we recommend that you place a wildcard
+match (such as <code>* @puppetlabs/community-maintainers</code>) as your
+last rule in the <code>CODEOWNERS</code> file.
+
+<p>See <a href="https://confluence.puppetlabs.com/display/OSP/Decision+rationale+for+use+of+CODEOWNERS+files">Confluence for more info</a></p>
+
+<h3>Public repositories without CODEOWNERS files:</h3>
+<ul>
+<% missing.each do |repo| -%>
+  <li><a href="<%= repo[:html_url] %>"><%= repo[:full_name] %></a>
+    <ul>
+      <li><%= repo[:description] %></li>
+    </ul>
+  </li>
+<% end %>
+</ul>
+
+<h3>Public repos with malformed CODEOWNERS:</h3>
+<ul>
+<% malformed.each do |repo| -%>
+  <li><a href="<%= repo[:html_url] %>"><%= repo[:full_name] %></a>
+    <ul>
+      <li><%= repo[:description] %></li>
+    </ul>
+  </li>
+<% end %>
+</ul>
+
+<h3>Public repos with incomplete codepath coverage:</h3>
+<ul>
+<% coverage.each do |repo| -%>
+  <li><a href="<%= repo[:html_url] %>"><%= repo[:full_name] %></a>
+    <ul>
+      <li><%= repo[:description] %></li>
+    </ul>
+  </li>
+<% end %>
+</ul>
+
+<hr />
+<p>
+  -- The Community Team<br />
+  If you've got feedback on this content, please let us know at <a href="mailto:community@puppet.com">community@puppet.com</a>.
+</p>

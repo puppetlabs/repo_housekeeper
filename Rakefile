@@ -1,5 +1,6 @@
 require 'erb'
 require 'base64'
+require 'globby'
 require 'open-uri'
 require 'octokit'
 require 'mail'
@@ -64,7 +65,7 @@ end
 
 desc 'Generate and send a stale PR report with a sample of the oldest open PRs.'
 task :stale_pulls do
-  org    = 'puppetlabs'
+  org    = $config[:org]
   stale  = github_client.search_issues("is:pr state:open user:#{org} archived:false sort:created-asc")
   sample = stale[:items].sample(15)
 
@@ -74,5 +75,71 @@ task :stale_pulls do
     ERB.new(File.read('templates/stale_prs.txt.erb'), nil, '-').result(binding),
     ERB.new(File.read('templates/stale_prs.html.erb'), nil, '-').result(binding),
   )
+end
+
+desc 'Check CODEOWNER coverage for all public repositories'
+task :codeowner_coverage do
+  org    = $config[:org]
+  client = github_client
+  client.auto_paginate = true
+
+  owners =      client.org_teams(org).map {|team| "@#{org}/#{team[:slug]}" }
+  owners.concat client.org_members(org).map {|user| user[:login] }
+
+  missing   = []
+  malformed = []
+  coverage  = []
+
+  repos = client.repos(org).each do |repo|
+    begin
+      next if repo[:archived]
+      next if repo[:fork]
+      next if repo[:private]
+      next if repo[:name].start_with? 'puppetlabs-' # modules are following other standards
+
+      sha   = client.commits(repo[:full_name]).first[:sha]
+      tree  = client.tree(repo[:full_name], sha, :recursive => true)[:tree]
+
+      files = tree.map {|entry| entry[:path]     if entry[:type] == 'blob' }.compact
+      dirs  = tree.map {|entry| entry[:path]+'/' if entry[:type] == 'tree' }.compact  # Globby only matches if directories have the trailing /
+      path  = files.find {|f| f =~ /CODEOWNERS/ }
+      unless path
+        missing << repo
+        next
+      end
+
+      rules = []
+      Base64.decode64(client.contents(repo[:full_name], :path => path).content).split("\n").each do |line|
+        rule, owner = line.split
+        next unless rule
+        next if rule.start_with? '#'
+
+        rules << rule
+        malformed << repo unless owners.include? owner
+      end
+
+      source = Globby::GlObject.new(files, dirs)
+      misses = Globby.reject(rules, source)
+      unless misses.empty?
+        coverage << repo
+      end
+
+    rescue => e
+      puts "Borked repo [#{repo[:name]}] #{e.message}"
+    end
+  end
+
+  sendmail(
+    ENV['EMAIL_ADDRESS'],
+    'Housekeeping report: CODEOWNERS linting',
+    ERB.new(File.read('templates/codeowners.txt.erb'), nil, '-').result(binding),
+    ERB.new(File.read('templates/codeowners.html.erb'), nil, '-').result(binding),
+  )
+
+end
+
+task :shell do
+  require 'pry'
+  binding.pry
 end
 

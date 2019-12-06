@@ -1,4 +1,5 @@
 ---
+:org: puppetlabs
 :smtp:
   :from: 'Puppet Community Team <community@puppet.com>'
   :domain: 'puppet.com'
