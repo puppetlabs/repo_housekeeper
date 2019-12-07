@@ -84,7 +84,7 @@ task :codeowner_coverage do
   client.auto_paginate = true
 
   owners =      client.org_teams(org).map {|team| "@#{org}/#{team[:slug]}" }
-  owners.concat client.org_members(org).map {|user| user[:login] }
+  owners.concat client.org_members(org).map {|user| "@#{user[:login]}" }
 
   missing   = []
   malformed = []
@@ -110,12 +110,12 @@ task :codeowner_coverage do
 
       rules = []
       Base64.decode64(client.contents(repo[:full_name], :path => path).content).split("\n").each do |line|
-        rule, owner = line.split
+        rule, *assignees = line.split
         next unless rule
         next if rule.start_with? '#'
 
         rules << rule
-        malformed << repo unless owners.include? owner
+        malformed << repo unless (assignees - owners).empty?
       end
 
       source = Globby::GlObject.new(files, dirs)
