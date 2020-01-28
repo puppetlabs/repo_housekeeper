@@ -2,7 +2,7 @@ name: Stale PR Report
 
 on:
   schedule:
-  - cron:  '0 2 * * 5'
+  - cron:  '0 18 * * 2'
 
 jobs:
   build:
@@ -16,7 +16,7 @@ jobs:
       uses: actions/setup-ruby@v1
     - name: Send Report
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN_EXTENDED }}
         SENDGRID_PASSWORD: ${{ secrets.SENDGRID_PASSWORD }}
         EMAIL_ADDRESS: community-experience@puppet.com
       run: |
