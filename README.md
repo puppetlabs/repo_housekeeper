@@ -45,3 +45,20 @@ It's configured via environment variables in the [workflow](https://github.com/p
 The email content is configured by [html](https://github.com/puppetlabs/repo_housekeeper/blob/master/templates/stale_prs.html.erb) and [text](https://github.com/puppetlabs/repo_housekeeper/blob/master/templates/stale_prs.txt.erb)
 format templates.
 
+###  `codeowner_coverage`
+
+This task just iterates all public repositories and builds a list of those without `CODEOWNERS`. Right
+after we did the push to get all the repos covered, that list should be empty. But over time as people
+create new repos, this task will help keep that coverage. This task requires the escalated privileges
+of the `GITHUB_TOKEN_EXTENDED` token.
+
+It's currently configured via environment variables in the poorly named [workflow](https://github.com/puppetlabs/repo_housekeeper/blob/master/.github/workflows/stale_pulls-workflow.yml)
+file.
+
+* `GITHUB_TOKEN_EXTENDED`: a personal access token created on @binford2k's account that allows org-team access.
+* `SENDGRID_PASSWORD`: configured as a GitHub secret
+* `EMAIL_ADDRESS`: the email address to send the report to.
+
+The email content is configured by [html](https://github.com/puppetlabs/repo_housekeeper/blob/master/templates/stale_prs.html.erb) and [text](https://github.com/puppetlabs/repo_housekeeper/blob/master/templates/stale_prs.txt.erb)
+format templates.
+
