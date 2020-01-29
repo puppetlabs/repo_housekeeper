@@ -7,7 +7,8 @@ pull requests and some instructions on cleaning them up.
 
 ## Using the tools
 
-Note: Right now, there's only the one `stale_pulls` task. 
+Note: Right now, there's only a few tasks; `stale_pulls` that calls out old stagnant pull requests,
+and `codeowner_coverage` that just looks for public repositories without `CODEOWNERS` files.
 
 The tasks are self-configured in the repository as `config.yaml`. You'll also need the Community
 Team sendgrid token for sending mail. You can get that from the Community Team for testing, but
