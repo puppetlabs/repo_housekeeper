@@ -138,8 +138,61 @@ task :codeowner_coverage do
 
 end
 
+desc 'Check inactive contributors in public repositories'
+task :inactive_contributors do
+  require 'date'
+  require 'google/cloud/bigquery'
+  require 'set'
+
+  # Known bots that may not appear in collaborator lists.
+  exclusions = %w[pdk-bot]
+
+  org    = $config[:org]
+  client = github_client
+  client.auto_paginate = true
+
+  # Collect repository names and contributors.
+  puts "Collecting public repositories for #{org}..."
+  repo_names = client.repos(org, type: 'public').reject do |repo|
+    repo[:archived] || repo[:fork] || repo[:private]
+  end.map {|repo| repo[:full_name]}
+
+  puts "Found #{repo_names.count} public repositories, finding all active GitHub accounts..."
+  bigquery = Google::Cloud::Bigquery.new
+  today, datefmt = Date.today, "%Y%m"
+  # Find all activity for the requested repositories in the last 180 days. We use the BigQuery
+  # dataset because requesting events through the GitHub API does at most the last 3 months. This
+  # processes approximately 5GB of data through BigQuery.
+  sql = "SELECT actor.login FROM `githubarchive.month.*` WHERE _TABLE_SUFFIX "+
+    "BETWEEN '#{(today-180).strftime(datefmt)}' AND '#{today.strftime(datefmt)}' "+
+    "AND repo.name IN (#{repo_names.map {|s| "'"+s+"'"}.join(',')}) GROUP BY actor.login"
+  data = bigquery.query sql do |conf|
+    conf.location = "US"
+  end
+  puts "Found #{data.count} active accounts in #{org} repositories"
+
+  contribs = Set.new
+  data.each do |row|
+    contribs.add(row[:login])
+  end
+
+  inaccessible = []
+  repo_names.each do |repo_name|
+    # Print collaborators that haven't had any activity in the last 6 months.
+    begin
+      collabs = client.collabs(repo_name, affiliation: 'outside')
+      inactive = collabs.map {|c| c[:login]}.reject {|name| contribs.include?(name)}
+      inactive = inactive.reject {|name| exclusions.include?(name)}
+      puts "Inactive collaborators in #{repo_name}: #{inactive.join(', ')}" unless inactive.empty?
+    rescue Octokit::Forbidden
+      inaccessible << repo_name
+      STDERR.puts "Insufficient access to list collaborators in #{repo_name}"
+    end
+  end
+  puts "Unable to access #{inaccessible.count} repositories"
+end
+
 task :shell do
   require 'pry'
   binding.pry
 end
-
