@@ -9,9 +9,10 @@ review requests for the parts of the codebase that a PR changes.</p>
 most common issues we see are malformed owner assignments and incomplete
 coverage.  The owners assignment should be <code>@puppetlabs/&lt;team name&gt;</code>.
 We prefer team assignments, but you can also use an individual assignment if
-needed. To ensure complete code coverage, we recommend that you place a wildcard
-match (such as <code>* @puppetlabs/community-maintainers</code>) as your
-first rule in the <code>CODEOWNERS</code> file.
+needed as long as you make sure to keep it current. To ensure complete code
+coverage, we recommend that you place a wildcard match
+(such as <code>* @puppetlabs/community-maintainers</code>) as your first rule in
+the <code>CODEOWNERS</code> file.
 
 <p>See <a href="https://confluence.puppetlabs.com/display/OSP/Decision+rationale+for+use+of+CODEOWNERS+files">Confluence for more info</a></p>
 
@@ -32,6 +33,9 @@ first rule in the <code>CODEOWNERS</code> file.
   <li><a href="<%= repo[:html_url] %>"><%= repo[:full_name] %></a>
     <ul>
       <li><%= repo[:description] %></li>
+<% repo[:codeowner_errors].each do |error| -%>
+      <li><%= error %></li>
+<% end -%>
     </ul>
   </li>
 <% end %>
@@ -43,6 +47,18 @@ first rule in the <code>CODEOWNERS</code> file.
   <li><a href="<%= repo[:html_url] %>"><%= repo[:full_name] %></a>
     <ul>
       <li><%= repo[:description] %></li>
+    </ul>
+  </li>
+<% end %>
+</ul>
+
+<h3>Public repos with codepaths owned by users:</h3>
+<ul>
+<% userowned.each do |repo| -%>
+  <li><a href="<%= repo[:html_url] %>"><%= repo[:full_name] %></a>
+    <ul>
+      <li><%= repo[:description] %></li>
+      <li>Users: <%= repo[:codeowner_users].join(', ') %></li>
     </ul>
   </li>
 <% end %>

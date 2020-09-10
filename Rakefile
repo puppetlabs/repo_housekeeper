@@ -89,6 +89,7 @@ task :codeowner_coverage do
   missing   = []
   malformed = []
   coverage  = []
+  userowned = []
 
   repos = client.repos(org).each do |repo|
     begin
@@ -108,20 +109,37 @@ task :codeowner_coverage do
         next
       end
 
-      rules = []
+      rules  = []
+      errors = []
+      users  = []
       Base64.decode64(client.contents(repo[:full_name], :path => path).content).split("\n").each do |line|
         rule, *assignees = line.split
         next unless rule
         next if rule.start_with? '#'
-
         rules << rule
-        malformed << repo unless (assignees - owners).empty?
+
+        teams, usernames = assignees.partition {|assignee| assignee.include? '/'}
+        mismatch = (teams - owners)
+        errors << "No teams matched rule: #{rule}" if teams.empty?
+        errors << "The team(s) #{mismatch.join(',')} appear to be invalid for rule: #{rule}" unless mismatch.empty?
+
+        users.concat usernames
       end
 
       source = Globby::GlObject.new(files, dirs)
       misses = Globby.reject(rules, source)
       unless misses.empty?
         coverage << repo
+      end
+
+      unless errors.empty?
+        repo[:codeowner_errors] = errors
+        malformed << repo
+      end
+
+      unless users.empty?
+        repo[:codeowner_users] = users.uniq
+        userowned << repo
       end
 
     rescue => e
