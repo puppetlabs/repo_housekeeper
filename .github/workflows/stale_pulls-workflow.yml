@@ -2,7 +2,7 @@ name: Stale PR Report
 
 on:
   schedule:
-  - cron:  '25 22 * * 3'
+  - cron:  '0 2 * * 4'
 
 jobs:
   build:
