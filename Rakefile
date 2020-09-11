@@ -96,7 +96,6 @@ task :codeowner_coverage do
       next if repo[:archived]
       next if repo[:fork]
       next if repo[:private]
-      next if repo[:name].start_with? 'puppetlabs-' # modules are following other standards
 
       sha   = client.commits(repo[:full_name]).first[:sha]
       tree  = client.tree(repo[:full_name], sha, :recursive => true)[:tree]
