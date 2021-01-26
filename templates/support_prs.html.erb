@@ -1,0 +1,27 @@
+<p>Hi there!</p>
+
+
+<p>
+  This is a list of all open GitHub pull requests filed by members of the support
+  team against <code>puppetlabs</code> repositories owned by the support team.
+</p>
+<p>
+  -- The Community Team<br />
+  If you've got feedback on this content, please let us know at <a href="mailto:community@puppet.com">community@puppet.com</a>.
+</p>
+
+<h3>Open PRs:</h3>
+<hr />
+
+<ul>
+<% pull_requests.each do |issue| -%>
+<li>[<%= issue[:base][:repo][:full_name] %>] <%= issue[:title] %>
+  <ul>
+    <li>Filed by: <a href="https://github.com/<%= issue[:user][:login] %>"><%= issue[:user][:login] %></a><% if issue[:author_association] == 'FIRST_TIME_CONTRIBUTOR' %> <small><tt>[FIRST TIME CONTRIBUTOR]</tt></small><% end %></li>
+    <li>Created: <%= issue[:created_at] %></li>
+    <li>Last updated: <%= issue[:updated_at] %></li>
+    <li>Link: <a href="<%= issue[:html_url] %>"><%= issue[:html_url] %></a></li>
+  </ul>
+</li>
+<% end %>
+</ul>
