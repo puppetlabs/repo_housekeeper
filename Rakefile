@@ -155,6 +155,38 @@ task :codeowner_coverage do
 
 end
 
+desc 'Generate a report of open PRs from the Support team.'
+task :support_pulls do
+  org     = $config[:org]
+  supteam = $config[:support_team]
+
+  team    = github_client.team_by_name(org, supteam)
+  repos   = github_client.team_repositories(team.id)
+
+  pull_requests = repos.reduce([]) do |memo, repo|
+    next memo if repo[:archived]
+
+    begin
+      codeowners = Base64.decode64(github_client.contents(repo.full_name, :path => 'CODEOWNERS').content)
+      next memo unless codeowners.match? (/@#{org}\/#{supteam}/)
+    rescue Octokit::NotFound
+      # comment this line to make this branch a no-op to include repos with no CODEOWNERS
+      next memo
+    end
+
+    all_prs = github_client.pull_requests(repo.full_name, :state => 'open')
+    memo.concat all_prs.select {|pr| github_client.team_member?(team.id, pr[:user][:login]) }
+  end
+
+  sendmail(
+    ENV['EMAIL_ADDRESS'],
+    'Housekeeping report: open Support team pull requests',
+    ERB.new(File.read('templates/support_prs.txt.erb'), nil, '-').result(binding),
+    ERB.new(File.read('templates/support_prs.html.erb'), nil, '-').result(binding),
+  )
+end
+
+
 desc 'Check inactive contributors in public repositories'
 task :inactive_contributors do
   require 'date'
