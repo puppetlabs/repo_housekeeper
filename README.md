@@ -30,17 +30,21 @@ $ bundle exec rake stale_pulls
 
 ## Tasks
 
+### Configuration:
+
+Tasks are configured via environment variables in the [workflow](https://github.com/puppetlabs/repo_housekeeper/blob/master/.github/workflows/weekly-workflow.yml).
+
+* `GITHUB_TOKEN`: comes automatically with the workflow and allows higher API rate limits
+* `GITHUB_TOKEN_EXTENDED`: a personal access token created on @binford2k's account that allows org-team access.
+* `SENDGRID_PASSWORD`: configured as a GitHub secret
+* `EMAIL_ADDRESS`: the email address to send the report to.
+
+
 ###  `stale_pulls`
 
 This task is very simple. It gets a list of the 100 oldest open pull requests in the entire
 `@puppetlabs` namespace. Then it takes a random sampling of 15 of those and emails a report.
 The sampling ensures that it's not just reporting about the same PRs every week.
-
-It's configured via environment variables in the [workflow](https://github.com/puppetlabs/repo_housekeeper/blob/master/.github/workflows/stale_pulls-workflow.yml).
-
-* `GITHUB_TOKEN`: comes automatically with the workflow and allows higher API rate limits
-* `SENDGRID_PASSWORD`: configured as a GitHub secret
-* `EMAIL_ADDRESS`: the email address to send the report to.
 
 The email content is configured by [html](https://github.com/puppetlabs/repo_housekeeper/blob/master/templates/stale_prs.html.erb) and [text](https://github.com/puppetlabs/repo_housekeeper/blob/master/templates/stale_prs.txt.erb)
 format templates.
@@ -52,13 +56,18 @@ after we did the push to get all the repos covered, that list should be empty. B
 create new repos, this task will help keep that coverage. This task requires the escalated privileges
 of the `GITHUB_TOKEN_EXTENDED` token.
 
-It's currently configured via environment variables in the poorly named [workflow](https://github.com/puppetlabs/repo_housekeeper/blob/master/.github/workflows/stale_pulls-workflow.yml)
-file.
-
-* `GITHUB_TOKEN_EXTENDED`: a personal access token created on @binford2k's account that allows org-team access.
-* `SENDGRID_PASSWORD`: configured as a GitHub secret
-* `EMAIL_ADDRESS`: the email address to send the report to.
-
 The email content is configured by [html](https://github.com/puppetlabs/repo_housekeeper/blob/master/templates/stale_prs.html.erb) and [text](https://github.com/puppetlabs/repo_housekeeper/blob/master/templates/stale_prs.txt.erb)
+format templates.
+
+###  `support_pulls`
+
+This task generates a list of all open pull requests made by members of the `support` team on repositories in the
+`puppetlabs` namespace. This helps them keep track of weekly work. This task requires the escalated privileges
+of the `GITHUB_TOKEN_EXTENDED` token. Owned/requested by:
+
+- David Bastedo <david.bastedo@puppet.com>
+- Kami Olszewski <kami@puppet.com>
+
+The email content is configured by [html](https://github.com/puppetlabs/repo_housekeeper/blob/master/templates/support_prs.html.erb) and [text](https://github.com/puppetlabs/repo_housekeeper/blob/master/templates/support_prs.txt.erb)
 format templates.
 

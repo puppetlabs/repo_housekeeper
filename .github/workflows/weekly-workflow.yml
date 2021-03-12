@@ -1,4 +1,4 @@
-name: Stale PR Report
+name: Weekly Reports
 
 on:
   schedule:
@@ -14,7 +14,8 @@ jobs:
         fetch-depth: 1
     - name: Set up Ruby
       uses: actions/setup-ruby@v1
-    - name: Send Report
+    - name: Send Reports
+      continue-on-error: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN_EXTENDED }}
         SENDGRID_PASSWORD: ${{ secrets.SENDGRID_PASSWORD }}
@@ -24,4 +25,12 @@ jobs:
         bundle install --jobs 4 --retry 3
         bundle exec rake stale_pulls
         bundle exec rake codeowner_coverage
-
+    - name: Send Support Pulls Report
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN_EXTENDED }}
+        SENDGRID_PASSWORD: ${{ secrets.SENDGRID_PASSWORD }}
+        EMAIL_ADDRESS: support-agile-planning@puppet.com
+      run: |
+        gem install bundler
+        bundle install --jobs 4 --retry 3
+        bundle exec rake support_pulls
