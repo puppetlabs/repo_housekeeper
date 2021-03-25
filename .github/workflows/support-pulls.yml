@@ -1,8 +1,8 @@
-name: Weekly Reports
+name: Support Pulls Report
 
 on:
   schedule:
-  - cron:  '0 2 * * 4'
+  - cron:  '0 2 * * 3'
 
 jobs:
   build:
@@ -14,13 +14,13 @@ jobs:
         fetch-depth: 1
     - name: Set up Ruby
       uses: actions/setup-ruby@v1
-    - name: Send Reports
+    - name: Send Support Pulls Report
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN_EXTENDED }}
         SENDGRID_PASSWORD: ${{ secrets.SENDGRID_PASSWORD }}
-        EMAIL_ADDRESS: community-experience@puppet.com
+        EMAIL_ADDRESS: support-agile-planning@puppet.com
       run: |
         gem install bundler
         bundle install --jobs 4 --retry 3
-        bundle exec rake stale_pulls
-        bundle exec rake codeowner_coverage
+        bundle exec rake support_pulls
+
