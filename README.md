@@ -63,7 +63,7 @@ format templates.
 
 This task generates a list of all open pull requests made by members of the `support` team on repositories in the
 `puppetlabs` namespace. This helps them keep track of weekly work. This task requires the escalated privileges
-of the `GITHUB_TOKEN_EXTENDED` token. Owned/requested by:
+of the `EXTENDED_TOKEN` token. Owned/requested by:
 
 - David Bastedo <david.bastedo@puppet.com>
 - Kami Olszewski <kami@puppet.com>
