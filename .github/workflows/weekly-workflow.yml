@@ -16,7 +16,7 @@ jobs:
       uses: actions/setup-ruby@v1
     - name: Send Reports
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN_EXTENDED }}
+        GITHUB_TOKEN: ${{ secrets.EXTENDED_TOKEN }}
         SENDGRID_PASSWORD: ${{ secrets.SENDGRID_PASSWORD }}
         EMAIL_ADDRESS: community-experience@puppet.com
       run: |
