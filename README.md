@@ -32,7 +32,7 @@ $ bundle exec rake stale_pulls
 
 ### Configuration:
 
-Tasks are configured via environment variables in the [workflow](https://github.com/puppetlabs/repo_housekeeper/blob/master/.github/workflows/weekly-workflow.yml).
+Tasks are configured via environment variables in the [workflow](https://github.com/puppetlabs/repo_housekeeper/blob/main/.github/workflows/weekly-workflow.yml).
 
 * `GITHUB_TOKEN`: comes automatically with the workflow and allows higher API rate limits
 * `EXTENDED_TOKEN`: a personal access token created on @binford2k's account that allows org-team access.
@@ -46,7 +46,7 @@ This task is very simple. It gets a list of the 100 oldest open pull requests in
 `@puppetlabs` namespace. Then it takes a random sampling of 15 of those and emails a report.
 The sampling ensures that it's not just reporting about the same PRs every week.
 
-The email content is configured by [html](https://github.com/puppetlabs/repo_housekeeper/blob/master/templates/stale_prs.html.erb) and [text](https://github.com/puppetlabs/repo_housekeeper/blob/master/templates/stale_prs.txt.erb)
+The email content is configured by [html](https://github.com/puppetlabs/repo_housekeeper/blob/main/templates/stale_prs.html.erb) and [text](https://github.com/puppetlabs/repo_housekeeper/blob/main/templates/stale_prs.txt.erb)
 format templates.
 
 ###  `codeowner_coverage`
@@ -56,7 +56,7 @@ after we did the push to get all the repos covered, that list should be empty. B
 create new repos, this task will help keep that coverage. This task requires the escalated privileges
 of the `EXTENDED_TOKEN` token.
 
-The email content is configured by [html](https://github.com/puppetlabs/repo_housekeeper/blob/master/templates/stale_prs.html.erb) and [text](https://github.com/puppetlabs/repo_housekeeper/blob/master/templates/stale_prs.txt.erb)
+The email content is configured by [html](https://github.com/puppetlabs/repo_housekeeper/blob/main/templates/stale_prs.html.erb) and [text](https://github.com/puppetlabs/repo_housekeeper/blob/main/templates/stale_prs.txt.erb)
 format templates.
 
 ###  `support_pulls`
@@ -68,6 +68,6 @@ of the `EXTENDED_TOKEN` token. Owned/requested by:
 - David Bastedo <david.bastedo@puppet.com>
 - Kami Olszewski <kami@puppet.com>
 
-The email content is configured by [html](https://github.com/puppetlabs/repo_housekeeper/blob/master/templates/support_prs.html.erb) and [text](https://github.com/puppetlabs/repo_housekeeper/blob/master/templates/support_prs.txt.erb)
+The email content is configured by [html](https://github.com/puppetlabs/repo_housekeeper/blob/main/templates/support_prs.html.erb) and [text](https://github.com/puppetlabs/repo_housekeeper/blob/main/templates/support_prs.txt.erb)
 format templates.
 
