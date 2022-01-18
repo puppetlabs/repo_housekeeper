@@ -56,7 +56,7 @@ after we did the push to get all the repos covered, that list should be empty. B
 create new repos, this task will help keep that coverage. This task requires the escalated privileges
 of the `EXTENDED_TOKEN` token.
 
-The email content is configured by [html](https://github.com/puppetlabs/repo_housekeeper/blob/main/templates/stale_prs.html.erb) and [text](https://github.com/puppetlabs/repo_housekeeper/blob/main/templates/stale_prs.txt.erb)
+The email content is configured by [html](https://github.com/puppetlabs/repo_housekeeper/blob/main/templates/codeowners.html.erb) and [text](https://github.com/puppetlabs/repo_housekeeper/blob/main/templates/codeowners.txt.erb)
 format templates.
 
 ###  `support_pulls`
