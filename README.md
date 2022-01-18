@@ -66,7 +66,6 @@ This task generates a list of all open pull requests made by members of the `sup
 of the `EXTENDED_TOKEN` token. Owned/requested by:
 
 - David Bastedo <david.bastedo@puppet.com>
-- Kami Olszewski <kami@puppet.com>
 
 The email content is configured by [html](https://github.com/puppetlabs/repo_housekeeper/blob/main/templates/support_prs.html.erb) and [text](https://github.com/puppetlabs/repo_housekeeper/blob/main/templates/support_prs.txt.erb)
 format templates.
