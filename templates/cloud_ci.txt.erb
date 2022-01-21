@@ -1,0 +1,18 @@
+Hi there!
+
+This is a quick report of all the puppetlabs repositories using the  CloudCI
+release workflow. We use it to keep track of our userbase, in part so that
+we can update and audit the list of repositories with access to the org-wide
+FORGE_API_KEY GitHub secret.
+
+Repositories with a release workflow:
+-----------------------------------------------
+<% cloudci_users.each do |repo| -%>
+* <%= repo[:html_url] %>
+    * <%= repo[:description] %>
+<% end -%>
+
+
+-----------------------------------------------
+-- The Community Team
+If you've got feedback on this content, please let us know at community@puppet.com

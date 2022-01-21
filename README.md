@@ -70,3 +70,13 @@ of the `EXTENDED_TOKEN` token. Owned/requested by:
 The email content is configured by [html](https://github.com/puppetlabs/repo_housekeeper/blob/main/templates/support_prs.html.erb) and [text](https://github.com/puppetlabs/repo_housekeeper/blob/main/templates/support_prs.txt.erb)
 format templates.
 
+###  `cloud_ci`
+
+This task generates a report of all reports with a `release.yml` workflow. Many (but not all) of these will be using the
+CloudCI release pipeline maintained by IAC. This report is used to help track/audit the userbase. This task requires the
+escalated privileges of the `EXTENDED_TOKEN` token. Owned/requested by:
+
+- IAC Team <iac_content@puppet.com>
+
+The email content is configured by [html](https://github.com/puppetlabs/repo_housekeeper/blob/main/templates/cloud_ci.html.erb) and [text](https://github.com/puppetlabs/repo_housekeeper/blob/main/templates/cloud_ci.txt.erb)
+format templates.
