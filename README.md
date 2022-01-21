@@ -16,17 +16,29 @@ when running as a GitHub action, it's accessible as the `SENDGRID_PASSWORD` secr
 
 ### Running during development
 
-Before running any task, you'll need to export the SendGrid token as an environment variable.
-Note that many tasks will expect other environment variables set as well. For example, this
-is how you would run the `stale_pulls` task:
+Make sure to install the required gems first:
 
 ```
 $ bundle install --path vendor/bundle
-...
+```
+
+To print the email to stdout instead of actually sending it, append `debug=true` to the end of
+your command line. For example, this is how you would run the `stale_pulls` task:
+
+```
+$ bundle exec rake stale_pulls debug=true
+```
+
+If you'd like to test sending an email, you will need to export some environment variables.
+Note that many tasks will expect other environment variables set as well. This is how you'd
+run that same `stale_pulls` task and send a test email:
+
+```
 $ export SENDGRID_PASSWORD=<sendgrid token -- get this from the Community Team>
 $ export EMAIL_ADDRESS='my_email_address@puppet.com'
 $ bundle exec rake stale_pulls
 ```
+
 
 ## Tasks
 
