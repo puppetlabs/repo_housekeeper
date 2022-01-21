@@ -17,7 +17,7 @@ Mail.defaults do
 end
 
 def sendmail(recipient, subject_line, text, html=nil)
-  Mail.deliver do
+  mail = Mail.new do
     to      recipient
     from    $config[:smtp][:from]
     subject subject_line
@@ -32,6 +32,12 @@ def sendmail(recipient, subject_line, text, html=nil)
           body html
       end
     end
+  end
+
+  if ENV['debug']
+    puts mail.to_s
+  else
+    mail.deliver!
   end
 end
 
