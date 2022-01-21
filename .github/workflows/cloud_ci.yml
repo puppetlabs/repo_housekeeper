@@ -3,6 +3,7 @@ name: Cloud CI Users Report
 on:
   schedule:
   - cron:  '0 2 * * 2'
+  workflow_dispatch:
 
 jobs:
   build:
