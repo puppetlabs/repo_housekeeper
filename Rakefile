@@ -187,6 +187,35 @@ task :support_pulls do
 end
 
 
+desc 'Generate a report of repositories using the CloudCI pipeline.'
+task :cloud_ci do
+  org    = $config[:org]
+  client = github_client
+  client.auto_paginate = true
+
+  cloudci_users = client.repos(org).reduce([]) do |memo, repo|
+    next memo if repo[:archived]
+
+    begin
+      # if the file exists, record the repository
+      github_client.contents(repo.full_name, :path => '.github/workflows/release.yml')
+      memo << repo
+    rescue Octokit::NotFound
+      # otherwise just skip it
+    end
+
+    memo
+  end
+
+  sendmail(
+    ENV['EMAIL_ADDRESS'],
+    'Housekeeping report: repositories using the CloudCI release pipeline',
+    ERB.new(File.read('templates/cloud_ci.txt.erb'), nil, '-').result(binding),
+    ERB.new(File.read('templates/cloud_ci.html.erb'), nil, '-').result(binding),
+  )
+end
+
+
 desc 'Check inactive contributors in public repositories'
 task :inactive_contributors do
   require 'date'

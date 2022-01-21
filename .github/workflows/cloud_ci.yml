@@ -1,0 +1,27 @@
+name: Cloud CI Users Report
+
+on:
+  schedule:
+  - cron:  '0 2 * * 2'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+    - name: Set up Ruby
+      uses: actions/setup-ruby@v1
+    - name: Send CloudCI Users Report
+      env:
+        GITHUB_TOKEN: ${{ secrets.EXTENDED_TOKEN }}
+        SENDGRID_PASSWORD: ${{ secrets.SENDGRID_PASSWORD }}
+        EMAIL_ADDRESS: ia_content@puppet.com
+      run: |
+        gem install bundler
+        bundle install --jobs 4 --retry 3
+        bundle exec rake support_pulls
+
