@@ -1,6 +1,7 @@
 ---
 :org: puppetlabs
 :support_team: support
+:modules_team: modules
 :smtp:
   :from: 'Puppet Community Team <community@puppet.com>'
   :domain: 'puppet.com'
