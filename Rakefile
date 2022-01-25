@@ -203,7 +203,8 @@ task :cloud_ci do
     next memo if repo[:archived]
 
     begin
-      # if the file exists, record the repository
+      # if this is a module with a release workflow, then record it
+      github_client.contents(repo.full_name, :path => 'metadata.json')
       github_client.contents(repo.full_name, :path => '.github/workflows/release.yml')
       memo << repo
     rescue Octokit::NotFound
