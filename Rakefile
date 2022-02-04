@@ -195,8 +195,9 @@ end
 
 desc 'Generate a report of repositories using the CloudCI pipeline.'
 task :cloud_ci do
-  org    = $config[:org]
-  client = github_client
+  org     = $config[:org]
+  modteam = $config[:modules_team]
+  client  = github_client
   client.auto_paginate = true
 
   cloudci_users = client.repos(org).reduce([]) do |memo, repo|
@@ -206,7 +207,12 @@ task :cloud_ci do
       # if this is a module with a release workflow, then record it
       github_client.contents(repo.full_name, :path => 'metadata.json')
       github_client.contents(repo.full_name, :path => '.github/workflows/release.yml')
-      memo << repo
+
+      # skip repos that the modules team owns
+      codeowners = Base64.decode64(github_client.contents(repo.full_name, :path => 'CODEOWNERS').content) rescue ''
+      unless codeowners.match? (/@#{org}\/#{modteam}/)
+        memo << repo
+      end
     rescue Octokit::NotFound
       # otherwise just skip it
     end
