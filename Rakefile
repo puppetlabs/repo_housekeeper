@@ -6,6 +6,10 @@ require 'octokit'
 require 'mail'
 require 'yaml'
 
+if ENV['debug']
+  [STDOUT, STDERR].each {|fd| fd.sync = true}
+end
+
 $config = YAML.load_file('config.yaml') rescue {}
 
 raise "Please configure SendGrid integration" unless $config[:smtp].is_a? Hash
@@ -281,6 +285,40 @@ task :inactive_contributors do
     end
   end
   puts "Unable to access #{inaccessible.count} repositories"
+end
+
+desc 'Check that all public repositories have a LICENSE file'
+task :missing_licenses do
+  org    = $config[:org]
+  client = github_client
+
+  paginating_client = client.dup
+  paginating_client.auto_paginate = true
+
+  missing = []
+
+  paginating_client.repos(org).each do |repo|
+    begin
+      next if repo[:archived]
+      next if repo[:fork]
+      next if repo[:private]
+
+      sha   = client.commits(repo[:full_name]).first[:sha]
+      tree  = paginating_client.tree(repo[:full_name], sha)[:tree]
+      files = tree.map {|entry| entry[:path] if entry[:type] == 'blob'}.compact
+
+      missing << repo unless files.find {|f| f =~ /^license/i }
+    rescue => e
+      STDERR.puts "Borked repo [#{repo[:name]}] #{e.message}"
+    end
+  end
+
+  sendmail(
+    ENV['EMAIL_ADDRESS'],
+    'Housekeeping report: missing licenses',
+    ERB.new(File.read('templates/missing_licenses.txt.erb'), nil, '-').result(binding),
+    ERB.new(File.read('templates/missing_licenses.html.erb'), nil, '-').result(binding),
+  )
 end
 
 task :shell do

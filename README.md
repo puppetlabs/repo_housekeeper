@@ -92,3 +92,9 @@ escalated privileges of the `EXTENDED_TOKEN` token. Owned/requested by:
 
 The email content is configured by [html](https://github.com/puppetlabs/repo_housekeeper/blob/main/templates/cloud_ci.html.erb) and [text](https://github.com/puppetlabs/repo_housekeeper/blob/main/templates/cloud_ci.txt.erb)
 format templates.
+
+### `missing_licenses`
+
+This task finds all public repositories that don't have an explicit license associated with them. It locates a license by the presence of a file in the root of the repository with a name that starts with "license", case insensitive.
+
+The email content is configured by [html](templates/missing_licenses.html.erb) and [text](templates/missing_licenses.txt.erb) format templates.

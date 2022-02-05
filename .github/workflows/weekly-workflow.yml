@@ -24,3 +24,4 @@ jobs:
         bundle install --jobs 4 --retry 3
         bundle exec rake stale_pulls
         bundle exec rake codeowner_coverage
+        bundle exec rake missing_licenses
