@@ -4,7 +4,7 @@ from relay_sdk import Interface, Dynamic as D
 relay = Interface()
 
 modules = []
-unsupported == []
+unsupported = []
 for repo in relay.get(D.repositories):
     try:
         if 'module' in repo['topics']:
