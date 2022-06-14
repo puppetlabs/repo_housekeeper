@@ -77,6 +77,6 @@ the field could not be parsed, or it does not point to a valid public repo:
 """
 
 tm = Template(template)
-report = tm.render(tag_module=tag_module, badge_supported=badge_supported, badge_unsupported=badge_unsupported, source_field_problem=source_field_problem)
+report = tm.render(tag_module=tag_module, badge_supported=badge_supported, badge_unsupported=badge_unsupported, source_field_problem=source_field_problem, missing_readme_note=missing_readme_note)
 
 relay.outputs.set('report', report)
