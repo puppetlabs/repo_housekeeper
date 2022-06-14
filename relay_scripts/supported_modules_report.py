@@ -7,7 +7,7 @@ relay = Interface()
 
 modules = relay.get(D.modules)
 repositories = relay.get(D.repositories)
-missing_readme_note = relay.get(D.missing_readme_note)
+unmarked = relay.get(D.unmarked)
 
 tag_module = []
 badge_supported = []
@@ -41,11 +41,11 @@ The following GitHub repositories appear to be missing the 'module' topic:
     * https://github.com/puppetlabs/{{ item['name'] }}
 {%- endfor %}
 {%- endif %}
-{%- if missing_readme_note %}
+{%- if unmarked %}
 
 
 The following GitHub repositories appear to be missing the support tier README note:
-{%- for item in missing_readme_note %}
+{%- for item in unmarked %}
     * https://github.com/{{ item }}
 {%- endfor %}
 {%- endif %}
@@ -77,6 +77,6 @@ the field could not be parsed, or it does not point to a valid public repo:
 """
 
 tm = Template(template)
-report = tm.render(tag_module=tag_module, badge_supported=badge_supported, badge_unsupported=badge_unsupported, source_field_problem=source_field_problem, missing_readme_note=missing_readme_note)
+report = tm.render(tag_module=tag_module, badge_supported=badge_supported, badge_unsupported=badge_unsupported, source_field_problem=source_field_problem, unmarked=unmarked)
 
 relay.outputs.set('report', report)
