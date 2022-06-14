@@ -7,6 +7,7 @@ relay = Interface()
 
 modules = relay.get(D.modules)
 repositories = relay.get(D.repositories)
+missing_readme_note = relay.get(D.missing_readme_note)
 
 tag_module = []
 badge_supported = []
@@ -38,6 +39,14 @@ template = """
 The following GitHub repositories appear to be missing the 'module' topic:
 {%- for item in tag_module %}
     * https://github.com/puppetlabs/{{ item['name'] }}
+{%- endfor %}
+{%- endif %}
+{%- if missing_readme_note %}
+
+
+The following GitHub repositories appear to be missing the support tier README note:
+{%- for item in missing_readme_note %}
+    * https://github.com/{{ item }}
 {%- endfor %}
 {%- endif %}
 {%- if badge_supported %}
