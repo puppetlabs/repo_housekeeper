@@ -1,21 +1,13 @@
 #!/usr/bin/env python
 import re
 from jinja2 import Template
-# from relay_sdk import Interface, Dynamic as D
-#
-# relay = Interface()
-#
-# modules = relay.get(D.modules)
-# repositories = relay.get(D.repositories)
-# unmarked = relay.get(D.unmarked)
+from relay_sdk import Interface, Dynamic as D
 
-import json
-with open('forge-mods.json') as json_file:
-    modules = json.load(json_file)
-with open('github-repos.json') as json_file:
-    repositories = json.load(json_file)
-with open('unmarked.json') as json_file:
-    unmarked = json.load(json_file)
+relay = Interface()
+
+modules = relay.get(D.modules)
+repositories = relay.get(D.repositories)
+unmarked = relay.get(D.unmarked)
 
 tag_module = []
 badge_supported = []
