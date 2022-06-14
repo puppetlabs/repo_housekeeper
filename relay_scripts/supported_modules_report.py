@@ -13,6 +13,7 @@ tag_module = []
 badge_supported = []
 badge_unsupported = []
 source_field_problem = []
+needs_readme = []
 
 for mod in modules:
     try:
@@ -34,6 +35,11 @@ for mod in modules:
     except Exception as e:
         print('Could not process module {0}: {1}'.format(mod['slug']))
 
+for name in unmarked:
+    repo = next(x for x in repositories if x['name'] == name.split('/')[1])
+    if not 'supported' in repo['topics']:
+        needs_readme.append(name)
+
 template = """
 {%- if tag_module -%}
 The following GitHub repositories appear to be missing the 'module' topic:
@@ -41,11 +47,11 @@ The following GitHub repositories appear to be missing the 'module' topic:
     * https://github.com/puppetlabs/{{ item['name'] }}
 {%- endfor %}
 {%- endif %}
-{%- if unmarked %}
+{%- if needs_readme %}
 
 
 The following GitHub repositories appear to be missing the support tier README note:
-{%- for item in unmarked %}
+{%- for item in needs_readme %}
     * https://github.com/{{ item }}
 {%- endfor %}
 {%- endif %}
@@ -77,6 +83,6 @@ the field could not be parsed, or it does not point to a valid public repo:
 """
 
 tm = Template(template)
-report = tm.render(tag_module=tag_module, badge_supported=badge_supported, badge_unsupported=badge_unsupported, source_field_problem=source_field_problem, unmarked=unmarked)
+report = tm.render(tag_module=tag_module, badge_supported=badge_supported, badge_unsupported=badge_unsupported, source_field_problem=source_field_problem, needs_readme=needs_readme)
 
 relay.outputs.set('report', report)
