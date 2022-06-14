@@ -8,7 +8,7 @@ unsupported == []
 for repo in relay.get(D.repositories):
     try:
         if 'module' in repo['topics']:
-            full_name = f'puppetlabs/{repo['name']}'
+            full_name = 'puppetlabs/{0}'.format(repo['name'])
             modules.append(full_name)
             if not 'supported' in repo['topics']:
                 unsupported.append(full_name)
