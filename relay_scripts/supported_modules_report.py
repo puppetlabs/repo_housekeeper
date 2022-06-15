@@ -8,6 +8,7 @@ relay = Interface()
 modules = relay.get(D.modules)
 repositories = relay.get(D.repositories)
 unmarked = relay.get(D.unmarked)
+incomplete = relay.get(D.incomplete)
 
 tag_module = []
 badge_supported = []
@@ -39,6 +40,14 @@ template = """
 The following GitHub repositories appear to be missing the 'module' topic:
 {%- for item in tag_module %}
     * https://github.com/puppetlabs/{{ item['name'] }}
+{%- endfor %}
+{%- endif %}
+{%- if incomplete %}
+
+
+The following GitHub repositories should have topics clarifying which support tier they fall into:
+{%- for item in incomplete %}
+    * https://github.com/{{ item }}
 {%- endfor %}
 {%- endif %}
 {%- if unmarked %}
@@ -77,6 +86,6 @@ the field could not be parsed, or it does not point to a valid public repo:
 """
 
 tm = Template(template)
-report = tm.render(tag_module=tag_module, badge_supported=badge_supported, badge_unsupported=badge_unsupported, source_field_problem=source_field_problem, unmarked=unmarked)
+report = tm.render(tag_module=tag_module, badge_supported=badge_supported, badge_unsupported=badge_unsupported, source_field_problem=source_field_problem, unmarked=unmarked, incomplete=incomplete)
 
 relay.outputs.set('report', report)
