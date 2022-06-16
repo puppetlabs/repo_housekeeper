@@ -1,0 +1,10 @@
+---
+:org: puppetlabs
+:support_team: support
+:modules_team: modules
+:smtp:
+  :from: 'Puppet Community Team <community@puppet.com>'
+  :domain: 'puppet.com'
+  :user_name: 'apikey'
+  :address: 'smtp.sendgrid.net'
+  :port: 587

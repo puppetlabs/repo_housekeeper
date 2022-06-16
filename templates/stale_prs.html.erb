@@ -1,0 +1,40 @@
+<p>Hi there!</p>
+
+<p>Following is a sample of some GitHub pull requests that could use some love.
+It would really help a ton if you'd help us out and clean up what you can. It's
+easier than you think:</p>
+
+<ol>
+  <li>First, check to see if the repository is even maintained anymore.
+    Can it just be archived or deleted? See these <a
+    href="https://confluence.puppetlabs.com/display/OSP/End+of+Maintenance+proposal">end-of-life
+    suggestions</a>.</li>
+  <li>Is there a <code>CODEOWNERS</code> file to help identify its owners?</li>
+  <li>Is the pull request even relevant? If not, simply close it with some wording following
+    <a href="https://confluence.puppetlabs.com/pages/viewpage.action?pageId=208736674">this guidance</a>.</li>
+  <li>Finally, review the PR. Can it be merged? Does it need work? Can you request a review from a subject matter expert?</li>
+</ol>
+
+<p>Thanks for your help! If you'd like to dig into some more issues, you'll find the full list with
+  <a href="https://github.com/pulls?q=is%3Aopen+is%3Apr+user%3Apuppetlabs+archived%3Afalse+sort%3Acreated-asc">a quick GitHub search</a>.
+</p>
+<p>
+  -- The Community Team<br />
+  If you've got feedback on this content, please let us know at <a href="mailto:community@puppet.com">community@puppet.com</a>.
+</p>
+
+<h3>Selected Issues:</h3>
+<hr />
+
+<ul>
+<% sample.each do |issue| -%>
+<li>[puppetlabs/<%= File.basename issue[:repository_url] %>] <%= issue[:title] %>
+  <ul>
+    <li>Filed by: <a href="https://github.com/<%= issue[:user][:login] %>"><%= issue[:user][:login] %></a><% if issue[:author_association] == 'FIRST_TIME_CONTRIBUTOR' %> <small><tt>[FIRST TIME CONTRIBUTOR]</tt></small><% end %></li>
+    <li>Created: <%= issue[:created_at] %></li>
+    <li>Last updated: <%= issue[:updated_at] %></li>
+    <li>Link: <a href="<%= issue[:html_url] %>"><%= issue[:html_url] %></a></li>
+  </ul>
+</li>
+<% end %>
+</ul>

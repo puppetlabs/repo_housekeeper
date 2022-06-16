@@ -1,0 +1,18 @@
+Hi there!
+
+This is a list of all open GitHub pull requests filed by members of the support
+team against puppetlabs repositories owned by the support team.
+
+-- The Community Team
+If you've got feedback on this content, please let us know at community@puppet.com
+
+
+Open PRs:
+-----------------------------------------------
+<% pull_requests.each do |issue| -%>
+* [<%= issue[:base][:repo][:full_name] %>] <%= issue[:title] %>
+        * Filed by: https://github.com/<%= issue[:user][:login] %><% if issue[:author_association] == 'FIRST_TIME_CONTRIBUTOR' %> [FIRST TIME CONTRIBUTOR] <% end %>
+        * Created: <%= issue[:created_at] %>
+        * Last updated: <%= issue[:updated_at] %>
+        * Link: <%= issue[:html_url] %>
+<% end -%>

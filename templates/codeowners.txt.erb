@@ -1,0 +1,53 @@
+Hi there!
+
+We've transitioned to the use of CODEOWNERS files in all our public GitHub
+repositories. Not only does this help document who's responsible for the code
+you're looking at, but it will automatically issue PR review requests for the
+parts of the codebase that a PR changes.
+
+This report helps to keep these files current, maintained, and correct. The most
+common issues we see are malformed owner assignments and incomplete coverage.
+The owners assignment should be '@puppetlabs/<team name>'. We prefer team
+assignments, but you can also use an individual assignment if needed as long as
+you make sure to keep it current. To ensure complete code coverage, we recommend
+that you place a wildcard match (such as '* @puppetlabs/community-maintainers')
+as your first rule in the CODEOWNERS file.
+
+See Confluence for more info:
+  https://confluence.puppetlabs.com/display/OSP/Decision+rationale+for+use+of+CODEOWNERS+files
+
+Public repositories without CODEOWNERS files:
+-----------------------------------------------
+<% missing.each do |repo| -%>
+* <%= repo[:html_url] %>
+    * <%= repo[:description] %>
+<% end -%>
+
+Public repos with malformed CODEOWNERS:
+-----------------------------------------------
+<% malformed.each do |repo| -%>
+* <%= repo[:html_url] %>
+    * <%= repo[:description] %>
+<% repo[:codeowner_errors].each do |error| -%>
+    * <%= error %>
+<% end -%>
+<% end -%>
+
+Public repos with incomplete codepath coverage:
+-----------------------------------------------
+<% coverage.each do |repo| -%>
+* <%= repo[:html_url] %>
+    * <%= repo[:description] %>
+<% end -%>
+
+Public repos with codepaths owned by users:
+-----------------------------------------------
+<% userowned.each do |repo| -%>
+* <%= repo[:html_url] %>
+    * <%= repo[:description] %>
+    * Users: <%= repo[:codeowner_users].join(', ') %>
+<% end -%>
+
+-----------------------------------------------
+-- The Community Team
+If you've got feedback on this content, please let us know at community@puppet.com
